@@ -7,7 +7,7 @@ def fuel_req(n):
 def fuel_req_tot(n):
     total = 0
     while True:
-        res = int(n/3) - 2
+        res = fuel_req(n)
         if res > 0:
             total += res
             n = res
