@@ -8,7 +8,7 @@ const int fuel_req(const int n) {
 }
 
 const int fuel_req_tot(const int n) {
-    int res = fuel_req(n);
+    auto res = fuel_req(n);
     return res <= 0 ? 0 : res + fuel_req_tot(res);
 }
 
