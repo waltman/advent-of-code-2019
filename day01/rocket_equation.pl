@@ -6,7 +6,6 @@ use experimental qw(signatures);
 
 my ($total, $total2);
 while (<>) {
-    chomp;
     $total += fuel_req($_);
     $total2 += fuel_req_tot($_);
 }
