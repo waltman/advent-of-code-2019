@@ -5,8 +5,7 @@ def fuel_req(n):
     return int(n/3) - 2
 
 def fuel_req_tot(n):
-    res = fuel_req(n)
-    return 0 if res <= 0 else res + fuel_req_tot(res)
+    return 0 if (res := fuel_req(n)) <= 0 else res + fuel_req_tot(res)
 
 total = 0
 total2 = 0
