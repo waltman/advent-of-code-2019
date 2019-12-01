@@ -8,16 +8,8 @@ const int fuel_req(const int n) {
 }
 
 const int fuel_req_tot(const int n) {
-    int total = 0;
-    int n1 = n;
-    while (true) {
-        int res = fuel_req(n1);
-        if (res > 0) {
-            total += res;
-            n1 = res;
-        } else
-            return total;
-    }
+    int res = fuel_req(n);
+    return res <= 0 ? 0 : res + fuel_req_tot(res);
 }
 
 int main(int argc, char *argv[]) {
