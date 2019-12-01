@@ -12,7 +12,7 @@ total2 = 0
 filename = argv[1]
 with open(filename) as f:
     for line in f:
-        n = int(line.rstrip())
+        n = int(line)
         total += fuel_req(n)
         total2 += fuel_req_tot(n)
 
