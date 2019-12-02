@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 from sys import argv
-import copy
 
 def run_intcode(pgm_init, noun, verb):
-    pgm = copy.deepcopy(pgm_init)
+    pgm = [x for x in pgm_init]
     pgm[1] = noun
     pgm[2] = verb
     i = 0
