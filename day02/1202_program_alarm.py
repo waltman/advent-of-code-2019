@@ -31,4 +31,3 @@ for noun in range(100):
     for verb in range(100):
         if run_intcode(pgm, noun, verb) == 19690720:
             print('Part 2:', 100 * noun + verb)
-            
