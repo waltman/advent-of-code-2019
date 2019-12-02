@@ -2,7 +2,7 @@
 from sys import argv
 
 def fuel_req(n):
-    return int(n/3) - 2
+    return n // 3 - 2
 
 def fuel_req_tot(n):
     return 0 if (res := fuel_req(n)) <= 0 else res + fuel_req_tot(res)
