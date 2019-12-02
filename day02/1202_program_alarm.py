@@ -5,19 +5,19 @@ def run_intcode(pgm_init, noun, verb):
     pgm = [x for x in pgm_init]
     pgm[1] = noun
     pgm[2] = verb
-    i = 0
+    ip = 0
     while True:
-        if pgm[i] == 1:
-            pgm[pgm[i+3]] = pgm[pgm[i+1]] + pgm[pgm[i+2]]
-        elif pgm[i] == 2:
-            pgm[pgm[i+3]] = pgm[pgm[i+1]] * pgm[pgm[i+2]]
-        elif pgm[i] == 99:
+        if pgm[ip] == 1:
+            pgm[pgm[ip+3]] = pgm[pgm[ip+1]] + pgm[pgm[ip+2]]
+        elif pgm[ip] == 2:
+            pgm[pgm[ip+3]] = pgm[pgm[ip+1]] * pgm[pgm[ip+2]]
+        elif pgm[ip] == 99:
             return pgm[0]
         else:
-            print(f'Unknown opcode of {pgm[i]} at position {i}')
+            print(f'Unknown opcode of {pgm[ip]} at position {ip}')
             print(pgm)
             break
-        i += 4
+        ip += 4
     
 
 filename = argv[1]

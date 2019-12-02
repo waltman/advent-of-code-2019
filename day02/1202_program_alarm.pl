@@ -23,20 +23,20 @@ sub run_intcode($pgm_init, $noun, $verb) {
     my @pgm = @$pgm_init;
     $pgm[1] = $noun;
     $pgm[2] = $verb;
-    my $i = 0;
+    my $ip = 0;
 
     while (1) {
-        if ($pgm[$i] == 1) {
-            $pgm[$pgm[$i+3]] = $pgm[$pgm[$i+1]] + $pgm[$pgm[$i+2]];
-        } elsif ($pgm[$i] == 2) {
-            $pgm[$pgm[$i+3]] = $pgm[$pgm[$i+1]] * $pgm[$pgm[$i+2]];
-        } elsif ($pgm[$i] == 99) {
+        if ($pgm[$ip] == 1) {
+            $pgm[$pgm[$ip+3]] = $pgm[$pgm[$ip+1]] + $pgm[$pgm[$ip+2]];
+        } elsif ($pgm[$ip] == 2) {
+            $pgm[$pgm[$ip+3]] = $pgm[$pgm[$ip+1]] * $pgm[$pgm[$ip+2]];
+        } elsif ($pgm[$ip] == 99) {
             return $pgm[0];
         } else {
-            say "Unknown opcode of $pgm[$i] at position $i";
+            say "Unknown opcode of $pgm[$ip] at position $ip";
             say "@pgm";
             last;
         }
-        $i += 4;
+        $ip += 4;
     }
 }
