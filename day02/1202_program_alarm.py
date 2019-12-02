@@ -13,7 +13,6 @@ def run_intcode(pgm_init, noun, verb):
             pgm[pgm[i+3]] = pgm[pgm[i+1]] * pgm[pgm[i+2]]
         elif pgm[i] == 99:
             return pgm[0]
-            break
         else:
             print(f'Unknown opcode of {pgm[i]} at position {i}')
             print(pgm)
