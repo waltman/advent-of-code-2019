@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 from sys import argv
 
+def parse_line(s):
+    return [(x[0],int(x[1:])) for x in s.rstrip().split(",")]
+
 def wire_path(a):
     path = set()
     pos = 0 + 0j
@@ -39,8 +42,8 @@ def dist_to_p(a, p):
 
 filename = argv[1]
 with open(filename) as f:
-    w1 = [(x[0],int(x[1:])) for x in f.readline().rstrip().split(",")]
-    w2 = [(x[0],int(x[1:])) for x in f.readline().rstrip().split(",")]
+    w1 = parse_line(f.readline())
+    w2 = parse_line(f.readline())
 
 s1 = wire_path(w1)
 s2 = wire_path(w2)
