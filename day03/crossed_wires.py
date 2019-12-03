@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 from sys import argv
-import re
 
 def wire_path(a):
     path = set()
     pos = 0 + 0j
 
-    for s in a:
-        m = re.match('(.)(\d+)', s)
-        direction = m.group(1)
-        length = int(m.group(2))
+    for direction, length in a:
         for _ in range(length):
             if direction == 'L':
                 pos -= 1
@@ -26,10 +22,7 @@ def dist_to_p(a, p):
     pos = 0 + 0j
     d = 0
 
-    for s in a:
-        m = re.match('(.)(\d+)', s)
-        direction = m.group(1)
-        length = int(m.group(2))
+    for direction, length in a:
         for _ in range(length):
             if direction == 'L':
                 pos -= 1
@@ -46,8 +39,8 @@ def dist_to_p(a, p):
 
 filename = argv[1]
 with open(filename) as f:
-    w1 = [x for x in f.readline().rstrip().split(",")]
-    w2 = [x for x in f.readline().rstrip().split(",")]
+    w1 = [(x[0],int(x[1:])) for x in f.readline().rstrip().split(",")]
+    w2 = [(x[0],int(x[1:])) for x in f.readline().rstrip().split(",")]
 
 s1 = wire_path(w1)
 s2 = wire_path(w2)
