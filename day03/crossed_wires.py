@@ -7,34 +7,21 @@ def parse_line(s):
 def wire_path(a):
     path = set()
     pos = 0 + 0j
+    delta = { 'L': -1, 'R': 1, 'U': 1j, 'D': -1j }
 
     for direction, length in a:
-        for _ in range(length):
-            if direction == 'L':
-                pos -= 1
-            elif direction == 'R':
-                pos += 1
-            elif direction == 'U':
-                pos += 1j
-            elif direction == 'D':
-                pos -= 1j
-            path.add(pos)
+        path |= { pos + x * delta[direction] for x in range(1, length+1) }
+        pos += length * delta[direction]
     return(path)
 
 def dist_to_p(a, p):
     pos = 0 + 0j
     d = 0
+    delta = { 'L': -1, 'R': 1, 'U': 1j, 'D': -1j }
 
     for direction, length in a:
         for _ in range(length):
-            if direction == 'L':
-                pos -= 1
-            elif direction == 'R':
-                pos += 1
-            elif direction == 'U':
-                pos += 1j
-            elif direction == 'D':
-                pos -= 1j
+            pos += delta[direction]
             d += 1
             if pos == p:
                 return d
