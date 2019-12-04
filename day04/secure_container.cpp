@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    printf("Part 1 %d\n", n1);
+    printf("Part 1: %d\n", n1);
 
     int n2 = 0;
     for (int i = START; i <= END; i++) {
@@ -46,5 +46,5 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    printf("Part 2 %d\n", n2);
+    printf("Part 2: %d\n", n2);
 }
