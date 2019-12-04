@@ -1,16 +1,22 @@
 import re
 
+def is_sorted(s):
+    for i in range(len(s)-1):
+        if s[i] > s[i+1]:
+            return False
+    return True
+
 n = 0
 for i in range(183564, 657474+1):
-    i_str = str(i)
-    if re.search('(\d)\\1', i_str) and ''.join(sorted(i_str)) == i_str:
+    s = str(i)
+    if is_sorted(s) and re.search('(\d)\\1', s):
         n += 1
 print('Part 1:', n)
 
 n = 0
 for i in range(183564, 657474+1):
     s = str(i)
-    if ''.join(sorted(s)) == s:
+    if is_sorted(s):
         # check if there's a pair of adjacent digits
         for j in range(len(s)-1):
             if s[j] == s[j+1]:
