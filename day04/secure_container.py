@@ -14,10 +14,11 @@ for i in range(183564, 657474+1):
         # check if there's a pair of adjacent digits
         for j in range(len(s)-1):
             if s[j] == s[j+1]:
-                if j > 0 and s[j] == s[j-1]:
-                    continue
-                if j < len(s)-2 and s[j] == s[j+2]:
-                    continue
+                try:
+                    if s[j] == s[j-1] or s[j] == s[j+2]:
+                        continue
+                except IndexError:
+                    pass
                 n += 1
                 break
 print('Part 2:', n)
