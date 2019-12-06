@@ -2,8 +2,9 @@
 from sys import argv
 
 class intcode:
-    def __init__(self, pgm):
+    def __init__(self, pgm, _input):
         self.pgm_init = pgm
+        self.input = _input
 
     def run(self):
         self.pgm = [x for x in self.pgm_init]
@@ -62,11 +63,10 @@ class intcode:
 
     def do_input(self, modes):
         params = self.get_params(modes, 1)
-        INPUT = 1
         if params[0] == 0:
-            self.pgm[self.pgm[self.ip+1]] = INPUT
+            self.pgm[self.pgm[self.ip+1]] = self.input
         else:
-            self.pgm[self.ip+1] = INPUT
+            self.pgm[self.ip+1] = self.input
         self.ip += 2
 
     def do_output(self, modes):
@@ -83,5 +83,5 @@ filename = argv[1]
 with open(filename) as f:
     pgm = [int(x) for x in f.readline().rstrip().split(",")]
 
-vc = intcode(pgm)
+vc = intcode(pgm, 1)
 print('Part 1:', vc.run())
