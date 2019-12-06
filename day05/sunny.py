@@ -22,6 +22,14 @@ class intcode:
                 self.do_input(modes)
             elif opcode == 4:
                 self.do_output(modes)
+            elif opcode == 5:
+                self.do_jit(modes)
+            elif opcode == 6:
+                self.do_jif(modes)
+            elif opcode == 7:
+                self.do_lt(modes)
+            elif opcode == 8:
+                self.do_eq(modes)
             elif opcode == 99:
                 print("halting")
                 break
@@ -61,6 +69,44 @@ class intcode:
             self.pgm[self.ip+3] = p1 * p2
         self.ip += 4
 
+    def do_jit(self, modes):
+        params = self.get_params(modes, 2)
+        p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
+        p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
+        if p1 != 0:
+            self.ip = p2
+        else:
+            self.ip += 3
+        
+    def do_jif(self, modes):
+        params = self.get_params(modes, 2)
+        p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
+        p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
+        if p1 == 0:
+            self.ip = p2
+        else:
+            self.ip += 3
+        
+    def do_lt(self, modes):
+        params = self.get_params(modes, 3)
+        p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
+        p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
+        if params[2] == 0:
+            self.pgm[self.pgm[self.ip+3]] = 1 if p1 < p2 else 0
+        else:
+            self.pgm[self.ip+3] = 1 if p1 < p2 else 0
+        self.ip += 4
+
+    def do_eq(self, modes):
+        params = self.get_params(modes, 3)
+        p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
+        p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
+        if params[2] == 0:
+            self.pgm[self.pgm[self.ip+3]] = 1 if p1 == p2 else 0
+        else:
+            self.pgm[self.ip+3] = 1 if p1 == p2 else 0
+        self.ip += 4
+
     def do_input(self, modes):
         params = self.get_params(modes, 1)
         if params[0] == 0:
@@ -85,3 +131,10 @@ with open(filename) as f:
 
 vc = intcode(pgm, 1)
 print('Part 1:', vc.run())
+
+vc = intcode(pgm, 5)
+print('Part 2:', vc.run())
+
+# for x in range(7, 10):
+#     vc = intcode(pgm, x)
+#     print(x, vc.run())
