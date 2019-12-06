@@ -13,12 +13,11 @@ while (<>) {
     $g->add_edge(split /\)/);
 }
 
-my $sum = 0;
-for my $v ($g->vertices) {
-    my @a = $g->SP_Dijkstra("COM", $v);
-    $sum += @a - 1;
+my $sptg = $g->SPT_Dijkstra("COM");
+{
+    no warnings 'uninitialized';
+    say 'Part 1: ', sum map {$sptg->get_vertex_attribute($_, 'weight')} $sptg->vertices;
 }
-say "Part 1: $sum";
 
 my @path = $g->SP_Dijkstra("YOU", "SAN");
 say "Part 2: ", @path - 3;
