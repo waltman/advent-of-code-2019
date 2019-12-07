@@ -1,7 +1,9 @@
 class Intcode:
-    def __init__(self, pgm, _input):
+    def __init__(self, pgm, _phase, _input):
         self.pgm_init = pgm
+        self.phase = _phase
         self.input = _input
+        self.input_cnt = 0
 
     def run(self):
         self.pgm = [x for x in self.pgm_init]
@@ -28,7 +30,7 @@ class Intcode:
             elif opcode == 8:
                 self.do_eq(modes)
             elif opcode == 99:
-                print("halting")
+#                print("halting")
                 break
             else:
                 print(f"unknown op {opcode}")
@@ -106,18 +108,26 @@ class Intcode:
 
     def do_input(self, modes):
         params = self.get_params(modes, 1)
-        if params[0] == 0:
-            self.pgm[self.pgm[self.ip+1]] = self.input
+        if self.input_cnt == 0:
+            _input = self.phase
+        elif self.input_cnt == 1:
+            _input = self.input
         else:
-            self.pgm[self.ip+1] = self.input
+            print('Invalid input_cnt of', input_cnt)
+        self.input_cnt += 1
+        
+        if params[0] == 0:
+            self.pgm[self.pgm[self.ip+1]] = _input
+        else:
+            self.pgm[self.ip+1] = _input
         self.ip += 2
 
     def do_output(self, modes):
         params = self.get_params(modes, 1)
         if params[0] == 0:
-            print(self.pgm[self.pgm[self.ip+1]])
+#            print(self.pgm[self.pgm[self.ip+1]])
             self.last = self.pgm[self.pgm[self.ip+1]]
         else:
-            print(self.pgm[self.ip+1])
+#            print(self.pgm[self.ip+1])
             self.last = self.pgm[self.ip+1]
         self.ip += 2
