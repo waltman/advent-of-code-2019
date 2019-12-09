@@ -9,9 +9,7 @@ class Intcode:
         self.ip = 0
         self.last = 0
         self.rel_base = 0
-        self.pgm = defaultdict(int)
-        for k,v in self.pgm_init.items():
-            self.pgm[k] = v
+        self.pgm = defaultdict(int, {k:v for k,v in self.pgm_init.items()})
 
     def run(self):
         while True:

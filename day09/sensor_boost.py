@@ -5,10 +5,8 @@ from Intcode import Intcode
 
 # read in the program
 filename = argv[1]
-pgm = defaultdict(int)
 with open(filename) as f:
-    for i,x in enumerate(f.readline().rstrip().split(",")):
-        pgm[i] = int(x)
+    pgm = defaultdict(int, {i:int(x) for i,x in enumerate(f.readline().rstrip().split(","))})
 
 vc = Intcode(pgm, 1)
 while True:
