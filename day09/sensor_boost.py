@@ -15,4 +15,13 @@ while True:
     output = vc.run()
     print(output)
     if vc.halted:
+        print('Part 1:', output)
+        break
+
+vc = Intcode(pgm, 2)
+while True:
+    output = vc.run()
+    print(output)
+    if vc.halted:
+        print('Part 2:', output)
         break

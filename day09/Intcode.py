@@ -1,10 +1,8 @@
 from collections import defaultdict
 
 class Intcode:
-#    def __init__(self, pgm, _phase, _input=0):
     def __init__(self, pgm, _input):
         self.pgm_init = pgm
-#        self.phase = _phase
         self.input = _input
         self.input_cnt = 0
         self.halted = False
@@ -50,27 +48,16 @@ class Intcode:
         for i in range(-1, -(length+1), -1):
             try:
                 if modes[i] == '0':
-#                    res.append(0)
                     res.append(self.pgm[self.ip-i])
                 elif modes[i] == '1':
-#                    res.append(1)
                     res.append(self.ip-i)
                 else:
-#                    res.append(2)
-                    res.append(self.rel_base + self.ip-i)
+                    res.append(self.rel_base + self.pgm[self.ip-i])
             except IndexError:
-#                res.append(0)
                 res.append(self.pgm[self.ip-i])
         return tuple(res)
 
     def do_add(self, modes):
-        # params = self.get_params(modes, 3)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if params[2] == 0:
-        #     self.pgm[self.pgm[self.ip+3]] = p1 + p2
-        # else:
-        #     self.pgm[self.ip+3] = p1 + p2
         p1,p2,p3 = self.get_params(modes, 3)
         self.pgm[p3] = self.pgm[p1] + self.pgm[p2]
         self.ip += 4
