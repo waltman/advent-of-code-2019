@@ -20,11 +20,9 @@ layers = len(a) // ROWS // COLS
 stack = np.array(a).reshape(layers, ROWS, COLS)
 
 output = np.zeros([ROWS,COLS]).astype(int) - 1
-for z in range(layers):
-    for r in range(ROWS):
-        for c in range(COLS):
-            if output[r,c] == -1 and stack[z,r,c] != 2:
-                output[r,c] = stack[z,r,c]
+for z,r,c in np.ndindex(stack.shape):
+    if output[r,c] == -1 and stack[z,r,c] != 2:
+        output[r,c] = stack[z,r,c]
 
 # now let's turn output into something more visible
 s = ''
