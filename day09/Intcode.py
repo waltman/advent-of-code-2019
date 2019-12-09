@@ -63,25 +63,11 @@ class Intcode:
         self.ip += 4
 
     def do_mult(self, modes):
-        # params = self.get_params(modes, 3)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if params[2] == 0:
-        #     self.pgm[self.pgm[self.ip+3]] = p1 * p2
-        # else:
-        #     self.pgm[self.ip+3] = p1 * p2
         p1,p2,p3 = self.get_params(modes, 3)
         self.pgm[p3] = self.pgm[p1] * self.pgm[p2]
         self.ip += 4
 
     def do_jit(self, modes):
-        # params = self.get_params(modes, 2)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if p1 != 0:
-        #     self.ip = p2
-        # else:
-        #     self.ip += 3
         p1,p2 = self.get_params(modes, 2)
         if self.pgm[p1] != 0:
             self.ip = self.pgm[p2]
@@ -89,13 +75,6 @@ class Intcode:
             self.ip += 3
         
     def do_jif(self, modes):
-        # params = self.get_params(modes, 2)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if p1 == 0:
-        #     self.ip = p2
-        # else:
-        #     self.ip += 3
         p1,p2 = self.get_params(modes, 2)
         if self.pgm[p1] == 0:
             self.ip = self.pgm[p2]
@@ -103,52 +82,21 @@ class Intcode:
             self.ip += 3
         
     def do_lt(self, modes):
-        # params = self.get_params(modes, 3)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if params[2] == 0:
-        #     self.pgm[self.pgm[self.ip+3]] = 1 if p1 < p2 else 0
-        # else:
-        #     self.pgm[self.ip+3] = 1 if p1 < p2 else 0
         p1,p2,p3 = self.get_params(modes, 3)
         self.pgm[p3] = 1 if self.pgm[p1] < self.pgm[p2] else 0
         self.ip += 4
 
     def do_eq(self, modes):
-        # params = self.get_params(modes, 3)
-        # p1 = self.pgm[self.pgm[self.ip+1]] if params[0] == 0 else self.pgm[self.ip+1]
-        # p2 = self.pgm[self.pgm[self.ip+2]] if params[1] == 0 else self.pgm[self.ip+2]
-        # if params[2] == 0:
-        #     self.pgm[self.pgm[self.ip+3]] = 1 if p1 == p2 else 0
-        # else:
-        #     self.pgm[self.ip+3] = 1 if p1 == p2 else 0
         p1,p2,p3 = self.get_params(modes, 3)
         self.pgm[p3] = 1 if self.pgm[p1] == self.pgm[p2] else 0
         self.ip += 4
 
     def do_input(self, modes):
-        # params = self.get_params(modes, 1)
-        # if self.input_cnt == 0:
-        #     _input = self.phase
-        # else:
-        #     _input = self.input
-        _input = self.input
-#        self.input_cnt = 1
-        
-        # if params[0] == 0:
-        #     self.pgm[self.pgm[self.ip+1]] = _input
-        # else:
-        #     self.pgm[self.ip+1] = _input
         p1, = self.get_params(modes, 1)
-        self.pgm[p1] = _input
+        self.pgm[p1] = self.input
         self.ip += 2
 
     def do_output(self, modes):
-        # params = self.get_params(modes, 1)
-        # if params[0] == 0:
-        #     self.last = self.pgm[self.pgm[self.ip+1]]
-        # else:
-        #     self.last = self.pgm[self.ip+1]
         p1, = self.get_params(modes, 1)
         self.last = self.pgm[p1]
         self.ip += 2
