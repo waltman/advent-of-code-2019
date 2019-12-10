@@ -26,7 +26,7 @@ def num_visible(asteroids, i):
             div = d[1]
         elif d[1] == 0:
             div = d[0]
-        elif d[0] > d[1]:
+        elif abs(d[0]) > abs(d[1]):
             div = gcd(abs(d[0]), abs(d[1]))
         else:
             div = gcd(abs(d[1]), abs(d[0]))
