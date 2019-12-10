@@ -22,6 +22,16 @@ def num_visible(asteroids, i):
     visible = {d for d in dists}
     for d in dists:
         s = set()
+        if d[0] == 0
+            div = d[1]
+        elif d[1] == 0:
+            div = d[0]
+        elif d[0] > d[1]:
+            div = gcd(d[0], d[1])
+        else:
+            div = gcd(d[1], d[1])
+        slope = (d[0] / div, d[1] / div)
+                      
         if d[0] == 0: # blocked row
             if d[1] > 0:
                 for i in range(d[1]+1, MAX):
