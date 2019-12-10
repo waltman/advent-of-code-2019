@@ -4,41 +4,37 @@ class Intcode:
     def __init__(self, pgm, _input):
         self.pgm_init = pgm
         self.input = _input
-        self.input_cnt = 0
         self.halted = False
+        self.broken = False
         self.ip = 0
         self.last = 0
         self.rel_base = 0
         self.pgm = defaultdict(int, {k:v for k,v in self.pgm_init.items()})
+        self.ops = {
+            1: self.do_add,
+            2: self.do_mult,
+            3: self.do_input,
+            4: self.do_output,
+            5: self.do_jit,
+            6: self.do_jif,
+            7: self.do_lt,
+            8: self.do_eq,
+            9: self.do_rel_base,
+            99: self.do_halt,
+            }
 
     def run(self):
+        self.broken = False
         while True:
             opcode = self.pgm[self.ip] % 100
             modes = str(self.pgm[self.ip])[0:-2]
-            if opcode == 1:
-                self.do_add(modes)
-            elif opcode == 2:
-                self.do_mult(modes)
-            elif opcode == 3:
-                self.do_input(modes)
-            elif opcode == 4:
-                self.do_output(modes)
-                break
-            elif opcode == 5:
-                self.do_jit(modes)
-            elif opcode == 6:
-                self.do_jif(modes)
-            elif opcode == 7:
-                self.do_lt(modes)
-            elif opcode == 8:
-                self.do_eq(modes)
-            elif opcode == 9:
-                self.do_rel_base(modes)
-            elif opcode == 99:
-                self.halted = True
-                break
-            else:
+            try:
+                self.ops[opcode](modes)
+                if self.broken:
+                    break
+            except KeyError:
                 print(f"unknown op {opcode}")
+
         return self.last
 
     def get_params(self, modes, length):
@@ -97,9 +93,14 @@ class Intcode:
     def do_output(self, modes):
         p1, = self.get_params(modes, 1)
         self.last = self.pgm[p1]
+        self.broken = True
         self.ip += 2
 
     def do_rel_base(self, modes):
         p1, = self.get_params(modes, 1)
         self.rel_base += self.pgm[p1]
         self.ip += 2
+
+    def do_halt(self, modes):
+        self.broken = True
+        self.halted = True
