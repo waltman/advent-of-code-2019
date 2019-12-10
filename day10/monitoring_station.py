@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 from sys import argv
 
+def gcd(a,b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
 def dist_from(asteroids, i):
     dists = set()
     for j in range(len(asteroids)):
