@@ -33,10 +33,8 @@ filename = argv[1]
 with open(filename) as f:
     pgm = [int(x) for x in f.readline().rstrip().split(",")]
 
-amps = [x for x in range(5)]
-perms = permutations(amps)
+perms = permutations(range(5))
 print('Part 1:', max([run_amps(pgm, order) for order in perms]))
 
-amps = [x for x in range(5, 10)]
-perms = permutations(amps)
+perms = permutations(range(5, 10))
 print('Part 2:', max([run_feedback_amps(pgm, order) for order in perms]))
