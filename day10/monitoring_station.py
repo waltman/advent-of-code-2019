@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 from sys import argv
+import math
+
+def sign(x):
+    return int(math.copysign(1,x))
 
 def gcd(a,b):
     if b == 0:
@@ -23,16 +27,17 @@ def num_visible(asteroids, i):
     for d in dists:
         s = set()
         if d[0] == 0:
-            div = d[1]
+            slope = (0, sign(d[1]))
         elif d[1] == 0:
-            div = d[0]
+            slope = (sign(d[0]), 0)
         elif abs(d[0]) > abs(d[1]):
             div = gcd(abs(d[0]), abs(d[1]))
+            slope = (d[0] // div, d[1] // div)
         else:
             div = gcd(abs(d[1]), abs(d[0]))
-        slope = (d[0] // div, d[1] // div)
-        print(f"{d=} {slope=}")
-        for x in range(2, MAX):
+            slope = (d[0] // div, d[1] // div)
+#        print(f"{d=} {slope=}")
+        for x in range(1, MAX):
             s.add((d[0] + slope[0]*x, d[1] + slope[1]*x))
                       
         # if d[0] == 0: # blocked row
@@ -53,9 +58,9 @@ def num_visible(asteroids, i):
         #     if x == 0 or x == 1:
         #         continue
         #     s.add((d[0] * x, d[1] * x))
-        print(f"{d=} {s=}")
+#        print(f"{d=} s=", sorted(s))
         visible -= s
-    print(len(visible), visible)
+    print(len(visible), sorted(visible))
     return len(visible)
 
 # parse input
