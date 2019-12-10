@@ -30,7 +30,7 @@ def num_visible(asteroids, i):
             div = gcd(abs(d[0]), abs(d[1]))
         else:
             div = gcd(abs(d[1]), abs(d[0]))
-        slope = (d[0] / div, d[1] / div)
+        slope = (d[0] // div, d[1] // div)
         print(f"{d=} {slope=}")
         for x in range(2, MAX):
             s.add((d[0] + slope[0]*x, d[1] + slope[1]*x))
