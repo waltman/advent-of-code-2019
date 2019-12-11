@@ -11,7 +11,7 @@ def sign(x):
 def xy2pol(x,y):
     theta = math.atan2(x,-y)
     if theta < 0:
-        theta = 2 * math.pi + theta
+        theta = math.tau + theta
     dist = math.sqrt(x**2 + y**2)
     return theta, dist
 
@@ -26,7 +26,7 @@ def dist_from(asteroids, i):
 
 # return a list of all the asteroids visible from asteroid i
 def visible(asteroids, i):
-    MAX = 10
+    MAX = 10 # I'm not really sure this will work in general but it does for me
     dists = dist_from(asteroids, i)
     visible = {d for d in dists}
     for d in dists:
@@ -83,7 +83,7 @@ positions.sort()
 for i in range(0, len(positions)-1):
     for j in range(i+1, len(positions)):
         if positions[j][0] == positions[i][0]:
-            positions[j] = (positions[i][0] + 2 * (j-i) * math.pi, positions[j][1], positions[j][2], positions[j][3])
+            positions[j] = (positions[i][0] + (j-i) * math.tau, positions[j][1], positions[j][2], positions[j][3])
         else:
             break
 positions.sort()
