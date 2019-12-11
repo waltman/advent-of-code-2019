@@ -15,7 +15,7 @@ def gcd(a,b):
 # - the angle in radians (clockwise with 12:00 = 0)
 # - eucludian distance from the origin
 def xy2pol(x,y):
-    theta = math.atan2(x,y)
+    theta = math.atan2(x,-y)
     if theta < 0:
         theta = 2 * math.pi + theta
     dist = math.sqrt(x**2 + y**2)
@@ -75,7 +75,7 @@ max_value = max(values)
 max_idx = values.index(max_value)
 print('Part 1:', max_value)
 print(max_idx)
-print(asteroids[max_idx])
+#print(asteroids[max_idx])
 positions = []
 for i in range(len(asteroids)):
     if i != max_idx:
@@ -84,7 +84,7 @@ for i in range(len(asteroids)):
         theta, dist = xy2pol(dx, dy)
         positions.append((theta, dist, asteroids[i][1], asteroids[i][0]))
 positions.sort()
-print(positions)
+#print(positions)
 # if in-line, add 2pi
 for i in range(0, len(positions)-1):
     for j in range(i+1, len(positions)):
@@ -92,6 +92,11 @@ for i in range(0, len(positions)-1):
             positions[j] = (positions[i][0] + 2 * (j-i) * math.pi, positions[j][1], positions[j][2], positions[j][3])
         else:
             break
-print(positions)
-print(sorted(positions))
+#print(positions)
+#print(sorted(positions))
+positions.sort()
+# for i in range(len(positions)):
+#     print(i+1, positions[i][2:4])
+print('Part 2:', positions[199][2]*100 + positions[199][3])
+
 
