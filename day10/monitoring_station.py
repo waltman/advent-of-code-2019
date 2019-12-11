@@ -31,7 +31,6 @@ def dist_from(asteroids, i):
 
 def visible(asteroids, i):
     MAX = 10
-#    print('asteroid =', i)
     dists = dist_from(asteroids, i)
     visible = {d for d in dists}
     for d in dists:
@@ -46,13 +45,10 @@ def visible(asteroids, i):
         else:
             div = gcd(abs(d[1]), abs(d[0]))
             slope = (d[0] // div, d[1] // div)
-#        print(f"{d=} {slope=}")
         for x in range(1, MAX):
             s.add((d[0] + slope[0]*x, d[1] + slope[1]*x))
                       
-#        print(f"{d=} s=", sorted(s))
         visible -= s
-#    print(len(visible), sorted(visible))
     return visible
 
 def num_visible(asteroids, i):
@@ -74,8 +70,6 @@ values = [num_visible(asteroids, i) for i in range(len(asteroids))]
 max_value = max(values)
 max_idx = values.index(max_value)
 print('Part 1:', max_value)
-print(max_idx)
-#print(asteroids[max_idx])
 positions = []
 for i in range(len(asteroids)):
     if i != max_idx:
@@ -84,7 +78,7 @@ for i in range(len(asteroids)):
         theta, dist = xy2pol(dx, dy)
         positions.append((theta, dist, asteroids[i][1], asteroids[i][0]))
 positions.sort()
-#print(positions)
+
 # if in-line, add 2pi
 for i in range(0, len(positions)-1):
     for j in range(i+1, len(positions)):
@@ -92,11 +86,8 @@ for i in range(0, len(positions)-1):
             positions[j] = (positions[i][0] + 2 * (j-i) * math.pi, positions[j][1], positions[j][2], positions[j][3])
         else:
             break
-#print(positions)
-#print(sorted(positions))
+
 positions.sort()
-# for i in range(len(positions)):
-#     print(i+1, positions[i][2:4])
 print('Part 2:', positions[199][2]*100 + positions[199][3])
 
 
