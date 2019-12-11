@@ -15,6 +15,7 @@ def xy2pol(x,y):
     dist = math.sqrt(x**2 + y**2)
     return theta, dist
 
+# make an array of (dx,dy) tuples
 def dist_from(asteroids, i):
     dists = set()
     for j in range(len(asteroids)):
@@ -23,6 +24,7 @@ def dist_from(asteroids, i):
                        asteroids[j][1] - asteroids[i][1]))
     return dists
 
+# return a list of all the asteroids visible from asteroid i
 def visible(asteroids, i):
     MAX = 10
     dists = dist_from(asteroids, i)
@@ -61,6 +63,11 @@ values = [num_visible(asteroids, i) for i in range(len(asteroids))]
 max_value = max(values)
 max_idx = values.index(max_value)
 print('Part 1:', max_value)
+
+# For part 2 we'll construct an array of tuples, one for each asteroid that's
+# not the monitoring station. The tuple contains:
+# (angle, distance, x, y)
+# This way we can sort the tuples into the proper order.
 positions = []
 for i in range(len(asteroids)):
     if i != max_idx:
@@ -70,15 +77,18 @@ for i in range(len(asteroids)):
         positions.append((theta, dist, asteroids[i][1], asteroids[i][0]))
 positions.sort()
 
-# if in-line, add 2pi
+# Now adjust the tuples so that if they're at the same angle, we'll put each
+# after the first 2 pi after the prior one, then sort again. That gives us
+# the array in vaporizing order.
 for i in range(0, len(positions)-1):
     for j in range(i+1, len(positions)):
         if positions[j][0] == positions[i][0]:
             positions[j] = (positions[i][0] + 2 * (j-i) * math.pi, positions[j][1], positions[j][2], positions[j][3])
         else:
             break
-
 positions.sort()
+
+# Now that it's sorted we can just pluck off the 200th asteroid
 print('Part 2:', positions[199][2]*100 + positions[199][3])
 
 
