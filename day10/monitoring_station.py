@@ -11,6 +11,16 @@ def gcd(a,b):
     else:
         return gcd(b, a % b)
 
+# given a vector x,y, returns:
+# - the angle in radians (clockwise with 12:00 = 0)
+# - eucludian distance from the origin
+def xy2pol(x,y):
+    theta = math.atan2(x,y)
+    if theta < 0:
+        theta = 2 * math.pi + theta
+    dist = math.sqrt(x**2 + y**2)
+    return theta, dist
+
 def dist_from(asteroids, i):
     dists = set()
     for j in range(len(asteroids)):
@@ -19,9 +29,9 @@ def dist_from(asteroids, i):
                        asteroids[j][1] - asteroids[i][1]))
     return dists
 
-def num_visible(asteroids, i):
+def visible(asteroids, i):
     MAX = 10
-    print('asteroid =', i)
+#    print('asteroid =', i)
     dists = dist_from(asteroids, i)
     visible = {d for d in dists}
     for d in dists:
@@ -40,28 +50,13 @@ def num_visible(asteroids, i):
         for x in range(1, MAX):
             s.add((d[0] + slope[0]*x, d[1] + slope[1]*x))
                       
-        # if d[0] == 0: # blocked row
-        #     if d[1] > 0:
-        #         for i in range(d[1]+1, MAX):
-        #             s.add((0, i))
-        #     else:
-        #         for i in range(d[1]-1, -MAX, -1):
-        #             s.add((0, i))
-        # if d[1] == 0: # blocked col
-        #     if d[0] > 0:
-        #         for i in range(d[0]+1, MAX):
-        #             s.add((i, 0))
-        #     else:
-        #         for i in range(d[0]-1, -MAX, -1):
-        #             s.add((i, 0))
-        # for x in range(-6, 7):
-        #     if x == 0 or x == 1:
-        #         continue
-        #     s.add((d[0] * x, d[1] * x))
 #        print(f"{d=} s=", sorted(s))
         visible -= s
-    print(len(visible), sorted(visible))
-    return len(visible)
+#    print(len(visible), sorted(visible))
+    return visible
+
+def num_visible(asteroids, i):
+    return len(visible(asteroids, i))
 
 # parse input
 asteroids = []
@@ -75,5 +70,28 @@ with open(filename) as f:
                 asteroids.append((row,col))
         row += 1
 
-#print(gcd(3,2))
-print('Part 1:', max([num_visible(asteroids, i) for i in range(len(asteroids))]))
+values = [num_visible(asteroids, i) for i in range(len(asteroids))]
+max_value = max(values)
+max_idx = values.index(max_value)
+print('Part 1:', max_value)
+print(max_idx)
+print(asteroids[max_idx])
+positions = []
+for i in range(len(asteroids)):
+    if i != max_idx:
+        dx = asteroids[i][1]-asteroids[max_idx][1]
+        dy = asteroids[i][0]-asteroids[max_idx][0]
+        theta, dist = xy2pol(dx, dy)
+        positions.append((theta, dist, asteroids[i][1], asteroids[i][0]))
+positions.sort()
+print(positions)
+# if in-line, add 2pi
+for i in range(0, len(positions)-1):
+    for j in range(i+1, len(positions)):
+        if positions[j][0] == positions[i][0]:
+            positions[j] = (positions[i][0] + 2 * (j-i) * math.pi, positions[j][1], positions[j][2], positions[j][3])
+        else:
+            break
+print(positions)
+print(sorted(positions))
+
