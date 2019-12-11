@@ -5,12 +5,6 @@ import math
 def sign(x):
     return int(math.copysign(1,x))
 
-def gcd(a,b):
-    if b == 0:
-        return a
-    else:
-        return gcd(b, a % b)
-
 # given a vector x,y, returns:
 # - the angle in radians (clockwise with 12:00 = 0)
 # - eucludian distance from the origin
@@ -39,11 +33,8 @@ def visible(asteroids, i):
             slope = (0, sign(d[1]))
         elif d[1] == 0:
             slope = (sign(d[0]), 0)
-        elif abs(d[0]) > abs(d[1]):
-            div = gcd(abs(d[0]), abs(d[1]))
-            slope = (d[0] // div, d[1] // div)
         else:
-            div = gcd(abs(d[1]), abs(d[0]))
+            div = math.gcd(abs(d[1]), abs(d[0]))
             slope = (d[0] // div, d[1] // div)
         for x in range(1, MAX):
             s.add((d[0] + slope[0]*x, d[1] + slope[1]*x))
