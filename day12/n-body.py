@@ -2,13 +2,16 @@
 from sys import argv
 import re
 import numpy as np
+import math
 
-def state_key(moon_pos, moon_vel):
-    key = []
-    for i in range(len(moon_pos)):
-        key += list(moon_pos[i])
-        key += list(moon_vel[i])
-    return tuple(key)
+def lcm(x, y):
+    return (x * y) // math.gcd(x,y)
+
+def lcm_list(a):
+    res = lcm(a[0], a[1])
+    for i in range(2, len(a)):
+        res = lcm(res, a[i])
+    return res
 
 STEPS = 1000
 moon_pos = []
@@ -52,15 +55,11 @@ print('Part 1', tot)
 
 moon_pos = np.copy(init_moon_pos)
 moon_vel = np.copy(init_moon_vel)
-#seen = set(tuple(moon_pos) + tuple(moon_vel))
-seen = set()
-seen.add(state_key(moon_pos, moon_vel))
 
 step = 1
-while True:
-    if step % 1000 == 0:
-        print(f'{step=}')
-        
+cycle = [None for _ in range(3)]
+found = 0
+while found < 3:
     # get new velocities
     new_vel = [np.copy(x) for x in moon_vel]
     for i in range(len(moon_pos)):
@@ -76,11 +75,21 @@ while True:
         moon_pos[i] += new_vel[i]
         moon_vel[i] = np.copy(new_vel[i])
 
-    key = state_key(moon_pos, moon_vel)
-    if key not in seen:
-        seen.add(key)
-        step += 1
-    else:
-        break
+    # look for cycles along each dimension
+    for i in range(3):
+        if cycle[i] is None:
+            match = True
+            for j in range(len(moon_pos)):
+                if moon_pos[j][i] != init_moon_pos[j][i] or moon_vel[j][i] != init_moon_vel[j][i]:
+                    match = False
+                    break
+            if match:
+                cycle[i] = step
+                print(i, step, cycle)
+                found += 1
+    
+    step += 1
 
-print('Part 2:', step)
+print(cycle)
+print(lcm_list(cycle))
+print('Part 2:', lcm_list(cycle))
