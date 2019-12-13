@@ -47,3 +47,21 @@ while True:
     
 print('Part 1:', num_blocks)
 draw_grid(grid)
+
+print('Part 2:')
+vc = Intcode(pgm, 0)
+vc.pgm[0] = 2
+while True:
+    c = vc.run()
+    if vc.halted:
+        break
+    r = vc.run()
+    if vc.halted:
+        break
+    tile = vc.run()
+    if vc.halted:
+        break
+    print(r,c,tile)
+    grid[r][c] = int(tile)
+    if tile == 2:
+        num_blocks += 1
