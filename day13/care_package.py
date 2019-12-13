@@ -63,5 +63,7 @@ while True:
         break
     print(r,c,tile)
     grid[r][c] = int(tile)
-    if tile == 2:
-        num_blocks += 1
+
+    if c == -1: # game started
+        vc.input = 1
+
