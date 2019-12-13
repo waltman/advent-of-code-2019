@@ -51,6 +51,7 @@ draw_grid(grid)
 print('Part 2:')
 vc = Intcode(pgm, 0)
 vc.pgm[0] = 2
+blocks = set()
 while True:
     c = vc.run()
     if vc.halted:
@@ -63,7 +64,11 @@ while True:
         break
     print(r,c,tile)
     grid[r][c] = int(tile)
+    if tile == 2:
+        blocks.add((r,c))
+    elif tile == 0 and (r,c) in blocks:
+        blocks.remove((r,c))
+        print(f'hit block {r},{c}! {len(blocks)} left.')
 
     if c == -1: # game started
-        vc.input = 1
-
+        print(f'{len(blocks)} to hit')
