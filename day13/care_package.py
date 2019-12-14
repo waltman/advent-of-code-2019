@@ -3,7 +3,9 @@ from sys import argv
 from collections import defaultdict
 from Intcode import Intcode
 
+# constants from an initial debugging run
 MAX_COL, MAX_ROW = 44, 23
+PROW = 22
 
 def draw_grid(grid):
     tile = {0: ' ',
@@ -21,6 +23,7 @@ def draw_grid(grid):
     print(s)
 
 def predict_hit_col(bpos, last_bpos):
+    """Predict column where the ball impacts the paddle"""
     if last_bpos is None:
         return 22 # initial position
 
@@ -30,9 +33,9 @@ def predict_hit_col(bpos, last_bpos):
     if drow < 0: # going up, just follow
         return bpos[1]
     elif dcol < 0: # going left
-        return bpos[1] - (22 - bpos[0])
+        return bpos[1] - (PROW - bpos[0])
     else: # going right
-        return bpos[1] + (22 - bpos[0])
+        return bpos[1] + (PROW - bpos[0])
 
 # read in the program
 filename = argv[1]
@@ -85,16 +88,19 @@ while True:
     else:
         grid[r][c] = int(tile)
         
-    if tile == 2:
-        blocks.add((r,c))
-    elif tile == 0 and (r,c) in blocks:
+    if tile == 0 and (r,c) in blocks: # a block is now a space
         blocks.remove((r,c))
         print(f'hit block {r},{c}! {len(blocks)} left.')
-    elif tile == 4:
+    elif tile == 2: # block (only on initial setup)
+        blocks.add((r,c))
+    elif tile == 3: # save current paddle column
+        pcol = c
+    elif tile == 4: # track ball and predict the column where it'll hit the paddle
         bpos = (r,c)
         hit_col = predict_hit_col(bpos, last_bpos)
         last_bpos = bpos
 
+        # more paddle towards predicted column
         if pcol > hit_col:
             vc.input = -1
         elif pcol < hit_col:
@@ -102,7 +108,4 @@ while True:
         else:
             vc.input = 0
             
-    elif tile == 3:
-        pcol = c
-
 print('Part 2:', score)
