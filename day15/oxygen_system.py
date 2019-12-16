@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from sys import argv
-from collections import defaultdict
+from collections import defaultdict, deque
 from Intcode import Intcode
 
 SIZE = 50
@@ -85,4 +85,28 @@ while True:
 
 draw_grid(grid)
 
-print(grid[25][25])
+queue = deque()
+queue.append((25,25,0))
+seen2 = set()
+while True:
+    if not queue:
+        break
+    row, col, dist = queue.popleft()
+    if grid[row][col] == 'O':
+        break
+    
+    if (row,col) in seen2:
+        continue
+    else:
+        seen2.add((row,col))
+
+    if grid[row+1][col] != '#':
+        queue.append((row+1,col,dist+1))
+    if grid[row-1][col] != '#':
+        queue.append((row-1,col,dist+1))
+    if grid[row][col+1] != '#':
+        queue.append((row,col+1,dist+1))
+    if grid[row][col-1] != '#':
+        queue.append((row,col-1,dist+1))
+
+print('Part1:', dist)
