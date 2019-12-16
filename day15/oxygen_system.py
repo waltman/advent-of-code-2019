@@ -36,13 +36,10 @@ seen.add(pos)
 path = []
 
 while True:
-#    print(f'{pos=} {dqueue=} {path=}')
-#    print(f'{pos=} {dqueue=} {len(path)=}')
     if len(dqueue) == 0:
         if len(path) == 0:
             print('done')
             break
-#        print('backtracking')
         dir = path.pop()
         pos += dir
         vc.input = DIRS[dir]
@@ -60,25 +57,20 @@ while True:
     seen.add(new_pos)
 
     vc.input = DIRS[dir]
-#    print(f'{vc.input=}')
     resp = vc.run()
-#    print(f'{resp=}')
     row = int(new_pos.imag)
     col = int(new_pos.real)
     if resp == 0:
-#        print('wall at', new_pos)
         grid[row][col] = '#'
         continue
     elif resp == 1:
-#        print('space at', new_pos)
         grid[row][col] = '.'
     elif resp == 2:
-#        print('oxygen at', new_pos)
         grid[row][col] = 'O'
         oxy_row = row
         oxy_col = col
     else:
-#        print('unexpected resp of', resp)
+        print('unexpected resp of', resp)
         break
 
     pos += dir
