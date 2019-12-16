@@ -14,9 +14,11 @@ def pattern_val(i, n):
 
 # read in the program
 filename = argv[1]
+count = int(argv[2])
 with open(filename) as f:
     signal = f.readline().rstrip()
 
+signal *= count
 PHASES=100
 for phase in range(1,PHASES+1):
     new_sig = ''
