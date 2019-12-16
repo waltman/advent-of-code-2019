@@ -26,12 +26,12 @@ filename = argv[1]
 with open(filename) as f:
     signal = f.readline().rstrip()
 
-PHASES=10
+PHASES=100
 for phase in range(1,PHASES+1):
     new_sig = ''
     for i in range(1,len(signal)+1):
 #        pattern = gen_pattern(i)
-        pattern_len = phase * 4
+        pattern_len = i * 4
         j = 1
         val = 0
         for d in signal:
