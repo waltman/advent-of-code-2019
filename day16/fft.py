@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 from sys import argv
 
-def gen_pattern(n):
-    pattern = []
-    base = [0,1,0,-1]
-    for x in base:
-        pattern += [x] * n
-    return pattern
-
 def pattern_val(i, n):
     '''return the ith value of the pattern when repeated n times'''
     if i < n:
