@@ -10,13 +10,11 @@ def gen_pattern(n):
 
 def pattern_val(i, n):
     '''return the ith value of the pattern when repeated n times'''
-    thresh = [j * n for j in range(1,4)]
-#    print(f'{thresh=}')
-    if i < thresh[0]:
+    if i < n:
         return 0
-    elif i < thresh[1]:
+    elif i < n*2:
         return 1
-    elif i < thresh[2]:
+    elif i < n*3:
         return 0
     else:
         return -1
