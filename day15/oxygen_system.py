@@ -75,6 +75,8 @@ while True:
     elif resp == 2:
 #        print('oxygen at', new_pos)
         grid[row][col] = 'O'
+        oxy_row = row
+        oxy_col = col
     else:
 #        print('unexpected resp of', resp)
         break
@@ -86,7 +88,7 @@ while True:
 draw_grid(grid)
 
 queue = deque()
-queue.append((25,25,0))
+queue.append((SIZE//2,SIZE//2,0))
 seen2 = set()
 while True:
     if not queue:
@@ -110,3 +112,30 @@ while True:
         queue.append((row,col-1,dist+1))
 
 print('Part1:', dist)
+
+queue = deque()
+queue.append((oxy_row,oxy_col,0))
+seen2 = set()
+max_dist = 0
+while True:
+    if not queue:
+        break
+    row, col, dist = queue.popleft()
+    
+    if (row,col) in seen2:
+        continue
+    else:
+        seen2.add((row,col))
+        grid[row][col] = 'O'
+        max_dist = max(max_dist, dist)
+
+    if grid[row+1][col] != '#':
+        queue.append((row+1,col,dist+1))
+    if grid[row-1][col] != '#':
+        queue.append((row-1,col,dist+1))
+    if grid[row][col+1] != '#':
+        queue.append((row,col+1,dist+1))
+    if grid[row][col-1] != '#':
+        queue.append((row,col-1,dist+1))
+
+print('Part2:', max_dist)
