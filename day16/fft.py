@@ -12,24 +12,56 @@ def pattern_val(i, n):
     else:
         return -1
 
+def process_signal(signal, num_phases, offset):
+    sig = signal[offset:]
+    for phase in range(1,num_phases+1):
+        new_sig = ''
+        for i in range(offset+1, len(signal)+1):
+            pattern_len = i * 4
+            j = 1+offset
+            val = 0
+            for d in sig:
+                val += int(d) * pattern_val(j % pattern_len, i)
+                j += 1
+            new_sig += str(abs(val) % 10)
+        sig = new_sig
+    return sig
+
+
 # read in the program
 filename = argv[1]
-count = int(argv[2])
 with open(filename) as f:
     signal = f.readline().rstrip()
 
-signal *= count
+orig_sig = signal
 PHASES=100
-for phase in range(1,PHASES+1):
-    new_sig = ''
-    for i in range(1,len(signal)+1):
-        pattern_len = i * 4
-        j = 1
-        val = 0
-        for d in signal:
-            val += int(d) * pattern_val(j % pattern_len, i)
-            j += 1
-        new_sig += str(abs(val) % 10)
-    signal = new_sig
+# for phase in range(1,PHASES+1):
+#     new_sig = ''
+#     for i in range(1,len(signal)+1):
+#         pattern_len = i * 4
+#         j = 1
+#         val = 0
+#         for d in signal:
+#             val += int(d) * pattern_val(j % pattern_len, i)
+#             j += 1
+#         new_sig += str(abs(val) % 10)
+#     signal = new_sig
 
-print('Part1:', signal[:8])
+# print('Part1:', signal[:8])
+print('Part1:', process_signal(signal, PHASES, 0)[:8])
+
+signal = orig_sig * 10_000
+offset = int(signal[0:7])
+
+subsig = [int(s) for s in signal[offset:]]
+for p in range(PHASES):
+    new_sig = [subsig[-1]]
+    for i in range(len(subsig)-2,-1,-1):
+        new_sig.append(subsig[i] + new_sig[-1])
+    subsig = [x % 10 for x in new_sig[::-1]]
+s = ''.join([str(x) for x in subsig[:8]])
+print('Part2:', s)
+
+
+
+        
