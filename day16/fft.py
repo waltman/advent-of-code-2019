@@ -48,7 +48,3 @@ for p in range(PHASES):
     subsig = [x % 10 for x in new_sig[::-1]]
 s = ''.join([str(x) for x in subsig[:8]])
 print('Part2:', s)
-
-
-
-        
