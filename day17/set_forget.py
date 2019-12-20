@@ -3,8 +3,8 @@ from sys import argv
 from collections import defaultdict, deque
 from Intcode import Intcode
 
-ROWS = 42
-COLS = 45
+ROWS = 41+2
+COLS = 45+2
 
 def draw_grid(grid):
     s = ''
@@ -28,7 +28,7 @@ with open(filename) as f:
 
 # read in the grid
 vc = Intcode(pgm,0)
-grid = [[' ' for x in range(COLS)] for y in range(ROWS)]
+grid = [['.' for x in range(COLS)] for y in range(ROWS)]
 row = 0
 col = 0
 while True:
@@ -40,7 +40,7 @@ while True:
         row += 1
         col = 0
     else:
-        grid[row][col] = ch
+        grid[row+1][col+1] = ch
         col += 1
 
 draw_grid(grid)
@@ -50,5 +50,5 @@ tot = 0
 for r in range(1, ROWS-1):
     for c in range(1,COLS-1):
         if is_intersection(grid, r, c):
-            tot += r * c
+            tot += (r-1) * (c-1)
 print('Part 1:', tot)
