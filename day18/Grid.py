@@ -27,9 +27,10 @@ class Grid:
         self.pos_of['@'] = (r,c)
 
     def remove(self, ch):
-        r,c = self.pos_of[ch]
-        self.grid[r][c] = '.'
-        del self.pos_of[ch]
+        if ch in self.pos_of:
+            r,c = self.pos_of[ch]
+            self.grid[r][c] = '.'
+            del self.pos_of[ch]
 
     def visible_keys(self):
         r,c = self.current_pos()
