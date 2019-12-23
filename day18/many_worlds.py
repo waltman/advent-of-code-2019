@@ -8,18 +8,19 @@ class Grid:
         self.grid = []
         self.rows = 0
         self.cols = 0
+        self.pos_of = dict()
 
     def add_row(self, row):
         if self.cols == 0:
             self.cols = len(row)
         self.grid.append(list(row))
         self.rows += 1
+        for c in range(self.cols):
+            if re.search('[a-zA-Z@]', self.grid[self.rows-1][c]):
+                self.pos_of[self.grid[self.rows-1][c]] = (self.rows-1,c)
 
     def current_pos(self):
-        for r in range(self.rows):
-            for c in range(self.cols):
-                if self.grid[r][c] == '@':
-                    return r,c
+        return self.pos_of['@']
 
     def visible_keys(self):
         r,c = self.current_pos()
