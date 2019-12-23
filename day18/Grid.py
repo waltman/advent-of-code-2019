@@ -24,24 +24,24 @@ class Grid:
         r,c = self.current_pos()
         seen = set()
         queue = deque()
-        queue.append((r,c))
+        queue.append((r,c,0))
         visible = []
         while queue:
-            r,c = queue.popleft()
+            r,c,d = queue.popleft()
             if (r,c) in seen:
                 continue
             seen.add((r,c))
             if self.grid[r][c] >= 'a' and self.grid[r][c] <= 'z':
-                visible.append(self.grid[r][c])
+                visible.append((self.grid[r][c],d))
                 continue
             if re.search('[a-z\.]', self.grid[r-1][c]):
-                queue.append((r-1,c))
+                queue.append((r-1,c,d+1))
             if re.search('[a-z\.]', self.grid[r+1][c]):
-                queue.append((r+1,c))
+                queue.append((r+1,c,d+1))
             if re.search('[a-z\.]', self.grid[r][c-1]):
-                queue.append((r,c-1))
+                queue.append((r,c-1,d+1))
             if re.search('[a-z\.]', self.grid[r][c+1]):
-                queue.append((r,c+1))
+                queue.append((r,c+1,d+1))
         return visible
 
     def get(self, r, c):
