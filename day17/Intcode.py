@@ -22,6 +22,7 @@ class Intcode:
             9: self.do_rel_base,
             99: self.do_halt,
             }
+        self.input_ptr = 0
 
     def run(self):
         self.broken = False
@@ -87,7 +88,11 @@ class Intcode:
 
     def do_input(self, modes):
         p1, = self.get_params(modes, 1)
-        self.pgm[p1] = self.input
+        if type(self.input) == list:
+            self.pgm[p1] = self.input[self.input_ptr]
+            self.input_ptr += 1
+        else:
+            self.pgm[p1] = self.input
         self.ip += 2
 
     def do_output(self, modes):
