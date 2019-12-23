@@ -2,6 +2,7 @@
 from sys import argv
 from collections import defaultdict, deque
 from Intcode import Intcode
+import re
 
 ROWS = 41+2
 COLS = 45+2
@@ -41,6 +42,57 @@ def turn(grid, pos, dir):
         return 'R', right[dir]
     else:
         return '', complex(0,0)
+
+def make_routine(s, patterns):
+    name = ['A','B','C']
+    routine = []
+    start = 0
+    while start < len(s):
+        found = False
+        for i in range(len(patterns)):
+            if re.search(f'^{patterns[i]}', s[start:]):
+                routine.append(name[i])
+                start += len(patterns[i])+1
+                found = True
+                break
+        if not found:
+            return
+    return routine
+
+def make_program(s):
+    start_i = 0
+    for i in range(start_i+20,start_i+5,-1):
+        if not s[i].isdigit():
+            continue
+        A = s[start_i:i+1]
+        start_j = i+2
+        while s[start_j:start_j+len(A)] == A:
+            start_j += len(A)+1
+        for j in range(start_j+20,start_j+5,-1):
+            if j >= len(s):
+                continue
+            if not s[j].isdigit():
+                continue
+            B = s[start_j:j+1]
+            start_k = j+2
+            while True:
+                if s[start_k:start_k+len(A)] == A:
+                    start_k += len(A)+1
+                    continue
+                if s[start_k:start_k+len(B)] == B:
+                    start_k += len(B)+1
+                    continue
+                break
+            for k in range(start_k+20,start_k+5,-1):
+                if k >= len(s):
+                    continue
+                if not s[k].isdigit():
+                    continue
+                C = s[start_k:k+1]
+                res = make_routine(s, [s[start_i:i+1],s[start_j:j+1],s[start_k:k+1]])
+                if res:
+                    return(','.join(res), A, B, C)
+        
 
 # read in the program
 filename = argv[1]
@@ -102,5 +154,23 @@ while True:
             cmds.append(cmd)
             dir = new_dir
             dist = 0
+
 print(','.join(cmds))
 
+# generate the program
+res, A, B, C = make_program(','.join(cmds))
+print('res =', res)
+print('A =', A)
+print('B =', B)
+print('C =', C)
+instructs = [ord(c) for c in f'{res}\n{A}\n{B}\n{C}\nn\n']
+
+# rerun the vc with the program and get the output
+vc = Intcode(pgm, 0)
+vc.pgm[0] = 2
+vc.input = instructs
+while True:
+    result = vc.run()
+    if vc.halted:
+        break
+print('Part 2:', vc.last)
