@@ -27,34 +27,63 @@ def make_routine(s, patterns):
             if re.search(f'^{patterns[i]}', s[start:]):
                 routine.append(name[i])
                 start += len(patterns[i])+1
-                print(f'{s[start:]}')
-                print(f'{routine=}')
+#                print(f'{s[start:]}')
+#                print(f'{routine=}')
                 found = True
                 break
         if not found:
-            print(f"couldn't find a pattern in {s[start:]}")
-            break
+#            print(f"couldn't find a pattern in {s[start:]}")
+            return
     return routine
             
+#print(s)
+#print()
+start_i = 0
+for i in range(start_i+20,start_i+5,-1):
+    if not s[i].isdigit():
+        continue
+    A = s[start_i:i+1]
+    start_j = i+2
+    for j in range(start_j+20,start_j+5,-1):
+        if j >= len(s):
+            continue
+        if not s[j].isdigit():
+            continue
+        B = s[start_j:j+1]
+        start_k = j+2
+        for k in range(start_k+20,start_k+5,-1):
+            if k >= len(s):
+                continue
+            if not s[k].isdigit():
+                continue
+            C = s[start_k:k+1]
+#            print(0, i, i+2, j, j+2, k, s[0:i+1],s[i+2:j+1],s[j+2:k+1])
+#            print(start_i, start_j, start_k, s[start_i:i+1],s[start_j:j+1],s[start_k:k+1])
+#            print(s[start_i:i+1],s[start_j:j+1],s[start_k:k+1])
+            res = make_routine(s, [s[start_i:i+1],s[start_j:j+1],s[start_k:k+1]])
+            if res:
+                print(res)
+                print(f'{A=} {B=} {C=}')
+        
 
-patterns = []
-start = 0
-for _ in range(3):
-    # does it start with a pattern we've already seen?
-    done = False
-    while not done:
-        for p in patterns:
-            if re.search(f'^{p}', s[start:]):
-                start += len(p) + 1
-                break
-        done = True
-    print(s[start:])
-    p = best_match(s[start:])
-    patterns.append(p)
-    print(f'{p=}')
-    print(f'{patterns=}')
+# patterns = []
+# start = 0
+# for _ in range(3):
+#     # does it start with a pattern we've already seen?
+#     done = False
+#     while not done:
+#         for p in patterns:
+#             if re.search(f'^{p}', s[start:]):
+#                 start += len(p) + 1
+#                 break
+#         done = True
+#     print(s[start:])
+#     p = best_match(s[start:])
+#     patterns.append(p)
+#     print(f'{p=}')
+#     print(f'{patterns=}')
 
 #if len(patterns) == 0:
 #    patterns.append('')
-print(patterns)
-print(",".join(make_routine(s, patterns)))
+#print(patterns)
+#print(",".join(make_routine(s, patterns)))
