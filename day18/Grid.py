@@ -20,6 +20,17 @@ class Grid:
     def current_pos(self):
         return self.pos_of['@']
 
+    def change_current_pos(self, r, c):
+        r1, c1 = self.pos_of['@']
+        self.grid[r1][c1] = '.'
+        self.grid[r][c] = '@'
+        self.pos_of['@'] = (r,c)
+
+    def remove(self, ch):
+        r,c = self.pos_of[ch]
+        self.grid[r][c] = '.'
+        del self.pos_of[ch]
+
     def visible_keys(self):
         r,c = self.current_pos()
         seen = set()
