@@ -1,8 +1,8 @@
 import re
 
 # test on the example at https://adventofcode.com/2019/day/17
-s='R,8,R,8,R,4,R,4,R,8,L,6,L,2,R,4,R,4,R,8,R,8,R,8,L,6,L,2'
-#s='L,6,L,4,R,12,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6'
+#s='R,8,R,8,R,4,R,4,R,8,L,6,L,2,R,4,R,4,R,8,R,8,R,8,L,6,L,2'
+s='L,6,L,4,R,12,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6,L,6,R,12,R,12,L,8,L,6,L,4,R,12,L,6,L,10,L,10,L,6'
 
 def best_match(s):
     max_str = ''
@@ -44,6 +44,9 @@ for i in range(start_i+20,start_i+5,-1):
         continue
     A = s[start_i:i+1]
     start_j = i+2
+    while s[start_j:start_j+len(A)] == A:
+        start_j += len(A)+1
+        print('HIT1')
     for j in range(start_j+20,start_j+5,-1):
         if j >= len(s):
             continue
@@ -51,6 +54,16 @@ for i in range(start_i+20,start_i+5,-1):
             continue
         B = s[start_j:j+1]
         start_k = j+2
+        while True:
+            if s[start_k:start_k+len(A)] == A:
+                start_k += len(A)+1
+                print('HIT2')
+                continue
+            if s[start_k:start_k+len(B)] == B:
+                start_k += len(B)+1
+                print('HIT3')
+                continue
+            break
         for k in range(start_k+20,start_k+5,-1):
             if k >= len(s):
                 continue
