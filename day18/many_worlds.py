@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from sys import argv
+from collections import deque
+import re
 
 class Grid:
     def __init__(self):
@@ -12,6 +14,36 @@ class Grid:
             self.cols = len(row)
         self.grid.append(list(row))
         self.rows += 1
+
+    def current_pos(self):
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.grid[r][c] == '@':
+                    return r,c
+
+    def visible_keys(self):
+        r,c = self.current_pos()
+        seen = set()
+        queue = deque()
+        queue.append((r,c))
+        visible = []
+        while queue:
+            r,c = queue.popleft()
+            if (r,c) in seen:
+                continue
+            seen.add((r,c))
+            if self.grid[r][c] >= 'a' and self.grid[r][c] <= 'z':
+                visible.append(self.grid[r][c])
+                continue
+            if re.search('[a-z\.]', self.grid[r-1][c]):
+                queue.append((r-1,c))
+            if re.search('[a-z\.]', self.grid[r+1][c]):
+                queue.append((r+1,c))
+            if re.search('[a-z\.]', self.grid[r][c-1]):
+                queue.append((r,c-1))
+            if re.search('[a-z\.]', self.grid[r][c+1]):
+                queue.append((r,c+1))
+        return visible
 
     def get(self, r, c):
         return self.grid[r][c]
@@ -34,6 +66,5 @@ print(grid)
 print(grid.grid[1][3])
 print(grid.get(1,3))
 
-grid.set(1,5,'.')
-grid.set(1,7,'@')
-print(grid)
+print(grid.current_pos())
+print(grid.visible_keys())
