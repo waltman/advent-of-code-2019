@@ -44,7 +44,7 @@ class Grid:
                 continue
             seen.add((r,c))
             if self.grid[r][c] >= 'a' and self.grid[r][c] <= 'z':
-                visible.append((self.grid[r][c],d))
+                visible.append((d,self.grid[r][c]))
                 continue
             if re.search('[a-z\.]', self.grid[r-1][c]):
                 queue.append((r-1,c,d+1))
