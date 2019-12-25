@@ -1,6 +1,8 @@
 from collections import deque
 import re
 
+cache = {}
+
 class Grid:
     def __init__(self):
         self.grid = []
@@ -32,8 +34,16 @@ class Grid:
             self.grid[r][c] = '.'
             del self.pos_of[ch]
 
+    def remaining_keys(self):
+        return [k for k in self.pos_of.keys() if k >= 'a' and k <= 'z']
+
     def visible_keys(self):
+        global cache
         r,c = self.current_pos()
+        cache_key = ','.join([str(r),str(c)] + sorted(self.remaining_keys()))
+        if cache_key in cache:
+            return cache[cache_key]
+        
         seen = set()
         queue = deque()
         queue.append((r,c,0))
@@ -54,6 +64,8 @@ class Grid:
                 queue.append((r,c-1,d+1))
             if re.search('[a-z\.]', self.grid[r][c+1]):
                 queue.append((r,c+1,d+1))
+
+        cache[cache_key] = visible
         return visible
 
     def get(self, r, c):
