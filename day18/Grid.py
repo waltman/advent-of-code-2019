@@ -16,17 +16,17 @@ class Grid:
         self.grid.append(list(row))
         self.rows += 1
         for c in range(self.cols):
-            if re.search('[a-zA-Z@]', self.grid[self.rows-1][c]):
+            if re.search('[a-zA-Z@1234]', self.grid[self.rows-1][c]):
                 self.pos_of[self.grid[self.rows-1][c]] = (self.rows-1,c)
 
-    def current_pos(self):
-        return self.pos_of['@']
+    def current_pos(self, ch='@'):
+        return self.pos_of[ch]
 
-    def change_current_pos(self, r, c):
-        r1, c1 = self.pos_of['@']
+    def change_current_pos(self, r, c, ch='@'):
+        r1, c1 = self.pos_of[ch]
         self.grid[r1][c1] = '.'
-        self.grid[r][c] = '@'
-        self.pos_of['@'] = (r,c)
+        self.grid[r][c] = ch
+        self.pos_of[ch] = (r,c)
 
     def remove(self, ch):
         if ch in self.pos_of:
@@ -37,9 +37,9 @@ class Grid:
     def remaining_keys(self):
         return [k for k in self.pos_of.keys() if k >= 'a' and k <= 'z']
 
-    def visible_keys(self):
+    def visible_keys(self, ch='@'):
         global cache
-        r,c = self.current_pos()
+        r,c = self.current_pos(ch)
         cache_key = ','.join([str(r),str(c)] + sorted(self.remaining_keys()))
         if cache_key in cache:
             return cache[cache_key]
@@ -54,7 +54,7 @@ class Grid:
                 continue
             seen.add((r,c))
             if self.grid[r][c] >= 'a' and self.grid[r][c] <= 'z':
-                visible.append((d,self.grid[r][c]))
+                visible.append((d,self.grid[r][c],ch))
                 continue
             if re.search('[a-z\.]', self.grid[r-1][c]):
                 queue.append((r-1,c,d+1))
@@ -68,6 +68,12 @@ class Grid:
         cache[cache_key] = visible
         return visible
 
+    def all_visible_keys(self):
+        visible = []
+        for i in range(1,5):
+            visible += self.visible_keys(str(i))
+        return visible
+    
     def get(self, r, c):
         return self.grid[r][c]
     
