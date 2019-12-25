@@ -24,6 +24,21 @@ def draw_grid(grid):
         s += "\n"
     print(s)
 
+def is_beam(pgm, row, col):
+    vc = Intcode(pgm,0)
+    vc.input = [col,row]
+    vc.input_ptr = 0
+    res = vc.run()
+    return res == 1
+
+def left_edge(pgm, row):
+    col = int(row * 0.78)
+    while True:
+        if is_beam(pgm, row, col):
+            return col
+        else:
+            col += 1
+
 # read in the program
 filename = argv[1]
 with open(filename) as f:
@@ -49,3 +64,15 @@ for row in range(ROWS):
 
 draw_grid(grid)
 print('Part 1:', part1)
+
+SIZE = 99
+row = 100
+while True:
+    col = left_edge(pgm, row)
+    if is_beam(pgm, row-SIZE, col) and is_beam(pgm, row-SIZE, col+SIZE) and is_beam(pgm, row, col+SIZE):
+       print(f'{row-SIZE=} {col=}')
+       print('Part 2:', col * 10000 + row-SIZE)
+       break
+    row = row + 1
+
+    
