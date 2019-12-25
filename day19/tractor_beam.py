@@ -8,7 +8,17 @@ COLS = 50
 
 def draw_grid(grid):
     s = ''
+    s += '      '
+    for c in range(COLS):
+        s += str(c // 10)
+    s += "\n"
+    s += '      '
+    for c in range(COLS):
+        s += str(c % 10)
+    s += "\n"
+    
     for r in range(ROWS):
+        s += f'{r:5d} '
         for c in range(COLS):
             s += grid[r][c]
         s += "\n"
