@@ -38,6 +38,7 @@ draw_grid(grid, rows, cols)
 portals = defaultdict(list)
 start = ()
 finish = ()
+inside = set()
 # top row
 for c in range(cols):
     if grid[0][c].isupper():
@@ -96,6 +97,7 @@ for row in range(2,rows-2):
                 else: # right
                     pos = (row,col+2)
                 portals[k].append(pos)
+                inside.add(pos)
                     
             elif grid[row+1][col].isupper(): # down
                 k = grid[row][col] + grid[row+1][col]
@@ -104,6 +106,7 @@ for row in range(2,rows-2):
                 else: # bottom
                     pos = (row+2,col)
                 portals[k].append(pos)
+                inside.add(pos)
 
 print(f'{start=} {finish=} {portals=}')
 warp = {}
@@ -136,3 +139,32 @@ while queue:
         queue.append(((row,col-1), dist+1))
     if grid[row][col+1] == '.' and (row,col+1) not in seen:
         queue.append(((row,col+1), dist+1))
+
+# run again with levels to solve part 2
+queue = deque()
+queue.append((start, 0, 0))
+seen = set()
+while queue:
+    pos, dist, level = queue.popleft()
+    if pos == finish and level == 0:
+        print('Part 2:', dist)
+        break
+
+    row, col = pos
+    seen.add((row, col, level))
+    if pos in warp:
+        if pos in inside or level > 0:
+            r1,c1 = warp[pos]
+            level2 = level+1 if pos in inside else level-1
+            if (r1,c1,level2) not in seen:
+                queue.append((warp[pos], dist+1, level2))
+
+    row, col = pos
+    if grid[row-1][col] == '.' and (row-1,col,level) not in seen:
+        queue.append(((row-1,col), dist+1, level))
+    if grid[row+1][col] == '.' and (row+1,col,level) not in seen:
+        queue.append(((row+1,col), dist+1, level))
+    if grid[row][col-1] == '.' and (row,col-1,level) not in seen:
+        queue.append(((row,col-1), dist+1, level))
+    if grid[row][col+1] == '.' and (row,col+1,level) not in seen:
+        queue.append(((row,col+1), dist+1, level))
