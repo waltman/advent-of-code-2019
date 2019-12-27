@@ -33,3 +33,35 @@ while True:
     if vc.halted:
         break
 print(s)
+
+# This is e_blake's solution from the subreddit. It seemed like the right approach, but
+# doubt I'd have ever gotten it on my own.
+instruct_str = """NOT F J
+OR E J
+OR H J
+AND D J
+NOT C T
+AND T J
+NOT D T
+OR B T
+OR E T
+NOT T T
+OR T J
+NOT A T
+OR T J
+RUN
+"""
+instructs = [ord(c) for c in instruct_str]
+
+vc = Intcode(pgm, 0)
+vc.input = instructs
+s = ''
+while True:
+    result = vc.run()
+    if result > 255:
+        print('Part 2', result)
+        break
+    s += chr(result)
+    if vc.halted:
+        break
+print(s)
