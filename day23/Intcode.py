@@ -97,7 +97,7 @@ class Intcode:
         elif type(self.input) == deque:
             if len(self.input) == 0:
                 val = -1
-                if self.empty_ctr >= 5:
+                if self.empty_ctr >= 1:
                     self.last = -42
                     self.broken = True
                     self.empty_ctr = 0
