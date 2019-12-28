@@ -19,6 +19,8 @@ done = False
 while not done:
     for i in range(N):
         resp = vcs[i].run()
+        if resp == -42:
+            continue
         inputs[i].append(resp)
         print(i, inputs[i])
         if len(inputs[i]) == 3:
@@ -27,7 +29,7 @@ while not done:
             y = inputs[i][2]
             print(i, dest, x, y)
             if dest == 255:
-                print('Part 1', dest)
+                print('Part 1', y)
                 done = True
                 break
             inputs[i].clear()

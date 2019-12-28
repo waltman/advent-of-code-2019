@@ -24,6 +24,7 @@ class Intcode:
             99: self.do_halt,
             }
         self.input_ptr = 0
+        self.empty_ctr = 0
 
     def run(self):
         self.broken = False
@@ -88,7 +89,7 @@ class Intcode:
         self.ip += 4
 
     def do_input(self, modes):
-        print(f'do_input() {self.addr=} {self.input=}')
+#        print(f'do_input() {self.addr=} {self.input=}')
         p1, = self.get_params(modes, 1)
         if type(self.input) == list:
             self.pgm[p1] = self.input[self.input_ptr]
@@ -96,6 +97,12 @@ class Intcode:
         elif type(self.input) == deque:
             if len(self.input) == 0:
                 val = -1
+                if self.empty_ctr >= 5:
+                    self.last = -42
+                    self.broken = True
+                    self.empty_ctr = 0
+                else:
+                    self.empty_ctr += 1
             else:
                 val = self.input.popleft()
             self.pgm[p1] = val
