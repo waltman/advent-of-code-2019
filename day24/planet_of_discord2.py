@@ -26,7 +26,10 @@ def stringify_grid(grid):
     s = ''
     for row in range(SIZE):
         for col in range(SIZE):
-            s += grid[row][col]
+            if row == 2 and col == 2:
+                s += '?'
+            else:
+                s += grid[row][col]
         s += '\n'
     return s
 
