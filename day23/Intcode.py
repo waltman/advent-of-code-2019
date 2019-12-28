@@ -1,9 +1,10 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 
 class Intcode:
     def __init__(self, pgm, _input):
         self.pgm_init = pgm
-        self.input = _input
+        self.input = deque([_input])
+        self.addr = _input
         self.halted = False
         self.broken = False
         self.ip = 0
@@ -87,10 +88,17 @@ class Intcode:
         self.ip += 4
 
     def do_input(self, modes):
+        print(f'do_input() {self.addr=} {self.input=}')
         p1, = self.get_params(modes, 1)
         if type(self.input) == list:
             self.pgm[p1] = self.input[self.input_ptr]
             self.input_ptr += 1
+        elif type(self.input) == deque:
+            if len(self.input) == 0:
+                val = -1
+            else:
+                val = self.input.popleft()
+            self.pgm[p1] = val
         else:
             self.pgm[p1] = self.input
         self.ip += 2
