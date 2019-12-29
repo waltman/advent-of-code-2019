@@ -13,11 +13,16 @@ s = ''
 while True:
     result = vc.run()
     s += chr(result)
-    if s.endswith('Command?\n'):
+    if s.endswith('Command?\n') or len(s) > 1000 or vc.halted:
         cmd = input(s)
         cmd += '\n'
         s = ''
         vc.input = [ord(c) for c in cmd]
+        vc.input_ptr = 0
 
-
-
+# Items needed in inventory to get past checkpoint:
+# Items in your inventory:
+# - hologram
+# - space law space brochure
+# - mutex
+# - manifold
